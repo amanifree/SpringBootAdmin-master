@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="console/header">
+</head>
+<body>
+<!--<section class="content-header">
+    <h1>配送管理</h1>
+    <small>列表管理</small>
+</section>-->
+<section class="content table-content">
+    <table id="dataGrid"></table>
+</section>
+<!--<div id="toolbar">
+    <a shiro:hasPermission="distrib:add" href="/console/distrib/form" class="btn btn-primary" >添加配送</a>
+    &lt;!&ndash;<a shiro:hasPermission="distrib:rece" href="javascript:receclick()"  class="btn btn-primary" >接货</a>&ndash;&gt;
+    &lt;!&ndash;    <a shiro:hasPermission="receipt:acre" href="/console/receipt/form" class="btn btn-primary" >验收退货</a>
+        <a shiro:hasPermission="receipt:acch" href="/console/receipt/form" class="btn btn-primary" >验收复核</a>
+        <a shiro:hasPermission="receipt:acba" href="/console/receipt/form" class="btn btn-primary" >验收退单</a>
+        <a shiro:hasPermission="receipt:tall" href="/console/receipt/form" class="btn btn-primary" >理货上架</a>&ndash;&gt;
+</div>-->
+<div th:include="console/footer"></div>
+</body>
+<script type="text/javascript">
+    $table = $("#dataGrid");
+    $(function () {
+        initDataGrid();
+    });
+
+    function initDataGrid(){
+        $table.bootstrapTable({
+            height : tableModel.getHeight(),
+            idField : "uid",
+            checkboxHeader: true,
+            columns : [[
+                //增加选择列
+                //{checkbox: true},
+                //{title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter},
+                //{title: "单据状态", field: "state" },
+                //{title: "单据编号", field: "distribNum" },
+                {title: "订货单位", field: "orderUnit", sortable: true},
+                {title: "产品名称", field: "productname",sortable: true},
+                {title: "厂家", field: "factory", sortable: true},
+                {title: "单位", field: "unit", sortable: true},
+                {title: "数量", field: "number", sortable: true},
+                {title: "出货时间", field: "shipmentTime", sortable: true},
+                {title: "接单人员", field: "orderMan", sortable: true},
+                {title: "接单开始", field: "orderBegin", sortable: true},
+                {title: "接单截止", field: "orderEnd", sortable: true},
+                {title: "数据", field: "dataMan", sortable: true},
+                {title: "单号", field: "databillno", sortable: true},
+                {title: "数据开始", field: "dataBegin", sortable: true},
+                {title: "数据截止", field: "dataEnd", sortable: true},
+                {title: "配货复核", field: "distribCheckMan", sortable: true},
+                {title: "复核开始", field: "distribCheckBegin", sortable: true},
+                {title: "复核截止", field: "distribCheckEnd", sortable: true},
+                {title: "打包人员", field: "distribPackMan", sortable: true},
+                {title: "送货人员", field: "distribDeliMan", sortable: true},
+                {title: "配送开始", field: "distribBegin", sortable: true},
+                {title: "配送截止", field: "distribEnd", sortable: true},
+                {title: "收货地址", field: "receiptAddr", sortable: true},
+                {title: "发出时间", field: "sendoutTime", sortable: true},
+                {title: "收货人", field: "recieptMan", sortable: true},
+
+
+
+
+            ]],
+            url : '/console/distrib/listrole',
+            queryParams: function(params){
+                //var state = [0,1];
+                return params;
+            },
+            responseHandler : function (res) {
+                return {
+                    rows : res.result.pageInfo.list,
+                    total : res.result.pageInfo.total
+                }
+            },
+            search : false,
+            searchOnEnterKey : false,
+            sortName : 'createdat',
+            sortOrder : 'asc',
+            pagination : true,
+            sidePagination : 'server',
+            pageSize: 20,
+            pageList : [20, 40, 50, 100],
+            toolbar : "#toolbar",
+            showRefresh : false,
+            showToggle : false,
+            singleSelect: false,
+        });
+    }
+
+
+    setInterval('refresh()',10000);
+    function refresh (){
+        var opt = {
+            url: "/console/distrib/listrole",
+            silent: true,
+            query:{
+                type:1,
+                level:2
+            }
+        };
+        $table.bootstrapTable('refresh', opt);
+    }
+
+
+
+
+/*    function operateFormatter(value, row, index) {
+        return [
+            '<a href="/console/distrib/form?uid='+row.uid+'" >',
+            '<i class="glyphicon glyphicon-edit"></i>修改',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0);" >',
+            '<i class="glyphicon glyphicon-remove"></i>删除',
+            '</a>'
+        ].join('');
+    }
+
+
+
+    window.operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            if(row.state!==1){
+                alert("已进入流程或流程结束，不能删除！");
+            }else{
+                operaModel.delRow(row.uid, '/console/distrib/delete', 'uid');
+            }
+        }
+    };
+
+    // 按钮点击事件
+    function receclick(){
+        alert("asdfasdfasd");
+        var selectContent = $table.bootstrapTable('getSelections')[0];
+        alert(selectContent);
+        if(typeof(selectContent) == 'undefined') {
+            //toastr.warning('请选择一列数据!');
+
+            alert('请选择一列数据!');
+            return false;
+        }else{
+            console.info(selectContent);
+            $('#item_project_modal').modal('show');     // 项目立项面板
+        }
+
+    };*/
+
+
+
+</script>
+</html>

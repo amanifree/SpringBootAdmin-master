@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.console.DistribMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Distrib" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="distrib_num" property="distribNum" jdbcType="VARCHAR" />
+    <result column="order_unit" property="orderUnit" jdbcType="VARCHAR" />
+    <result column="productname" property="productname" jdbcType="VARCHAR" />
+    <result column="factory" property="factory" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="DECIMAL" />
+    <result column="shipment_time" property="shipmentTime" jdbcType="TIMESTAMP" />
+    <result column="order_begin" property="orderBegin" jdbcType="TIMESTAMP" />
+    <result column="order_end" property="orderEnd" jdbcType="TIMESTAMP" />
+    <result column="order_man" property="orderMan" jdbcType="VARCHAR" />
+    <result column="pick_begin" property="pickBegin" jdbcType="TIMESTAMP" />
+    <result column="pick_end" property="pickEnd" jdbcType="TIMESTAMP" />
+    <result column="picker" property="picker" jdbcType="VARCHAR" />
+    <result column="data_man" property="dataMan" jdbcType="VARCHAR" />
+    <result column="databillno" property="databillno" jdbcType="VARCHAR" />
+    <result column="data_begin" property="dataBegin" jdbcType="TIMESTAMP" />
+    <result column="data_end" property="dataEnd" jdbcType="TIMESTAMP" />
+    <result column="distrib_check_man" property="distribCheckMan" jdbcType="VARCHAR" />
+    <result column="distrib_check_begin" property="distribCheckBegin" jdbcType="TIMESTAMP" />
+    <result column="distrib_check_end" property="distribCheckEnd" jdbcType="TIMESTAMP" />
+    <result column="distrib_pack_man" property="distribPackMan" jdbcType="VARCHAR" />
+    <result column="distrib_pack_begin" property="distribPackBegin" jdbcType="TIMESTAMP" />
+    <result column="distrib_pack_end" property="distribPackEnd" jdbcType="TIMESTAMP" />
+    <result column="distrib_deli_man" property="distribDeliMan" jdbcType="VARCHAR" />
+    <result column="distrib_begin" property="distribBegin" jdbcType="TIMESTAMP" />
+    <result column="distrib_end" property="distribEnd" jdbcType="TIMESTAMP" />
+    <result column="receipt_addr" property="receiptAddr" jdbcType="VARCHAR" />
+    <result column="sendout_time" property="sendoutTime" jdbcType="TIMESTAMP" />
+    <result column="reciept_man" property="recieptMan" jdbcType="VARCHAR" />
+    <result column="arrival_time" property="arrivalTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="createdat" property="createdat" jdbcType="TIMESTAMP" />
+    <result column="updatedat" property="updatedat" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <!--根据角色对应的状态查询收货列表-->
+  <select id="selectByRole" parameterType="String" resultMap="BaseResultMap">
+    select *  from distrib where state in
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

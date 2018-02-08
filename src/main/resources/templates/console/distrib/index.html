@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="console/header">
+</head>
+<body>
+<section class="content-header">
+    <h1>配送管理</h1>
+    <small>列表管理</small>
+</section>
+<section class="content table-content">
+    <table id="dataGrid"></table>
+</section>
+<div id="toolbar">
+    <a href="/console/distrib/form" class="btn btn-primary">新增配送</a>
+    <a href="javascript:receclick()" class="btn btn-primary">接单处理</a>
+    <a href="/console/distrib/form" class="btn btn-primary">配货处理</a>
+    <a href="/console/distrib/form" class="btn btn-primary">开单处理</a>
+    <a href="/console/distrib/form" class="btn btn-primary">复核处理</a>
+    <a href="/console/distrib/form" class="btn btn-primary">打包处理</a>
+    <a href="/console/distrib/form" class="btn btn-primary">送货处理</a>
+    <!--<a shiro:hasPermission="distrib:rece" href="javascript:receclick()"  class="btn btn-primary" >接货</a>-->
+    <!--    <a shiro:hasPermission="receipt:acre" href="/console/receipt/form" class="btn btn-primary" >验收退货</a>
+        <a shiro:hasPermission="receipt:acch" href="/console/receipt/form" class="btn btn-primary" >验收复核</a>
+        <a shiro:hasPermission="receipt:acba" href="/console/receipt/form" class="btn btn-primary" >验收退单</a>
+        <a shiro:hasPermission="receipt:tall" href="/console/receipt/form" class="btn btn-primary" >理货上架</a>-->
+</div>
+<div th:include="console/footer"></div>
+</body>
+<script type="text/javascript">
+
+    /*<![CDATA[*/
+
+    $table = $("#dataGrid");
+    $(function () {
+        initDataGrid();
+    });
+
+    function initDataGrid() {
+        $table.bootstrapTable({
+            height: tableModel.getHeight(),
+            idField: "uid",
+            checkboxHeader: true,
+            columns: [
+                [{title: "物流中心配送信息一览表", halign: "center", align: "center", colspan: 16}],
+
+                [
+                    {title: "数据部", valign: "middle", align: "center", colspan: 9, rowspan: 1},
+                    {title: "仓储部", valign: "middle", align: "center", colspan: 1, rowspan: 1},
+                    {title: "数据部", valign: "middle", align: "center", colspan: 1, rowspan: 1},
+                    {title: "仓储部", valign: "middle", align: "center", colspan: 1, rowspan: 1},
+                    {title: "配送部", valign: "middle", align: "center", colspan: 4, rowspan: 1},
+                    //{title: "松下a", valign: "middle", align: "center", colspan: 2, rowspan: 1}
+                ],
+
+                [
+                    //增加选择列
+                    {checkbox: true},
+                    /*{title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter},*/
+                    {title: "单据状态", field: "state", align: "center"},
+                    {title: "单据编号", field: "distribNum", align: "center"},
+                    {title: "订货单位", field: "orderinfor", align: "center"},
+                    {title: "产品名称", field: "productname", align: "center"},
+                    {title: "单位", field: "unit", align: "center"},
+                    {title: "数量", field: "number", align: "center"},
+                    {title: "厂家", field: "factory", align: "center"},
+                    {title: "接单员", field: "recestartend", align: "center"},
+                    {title: "配货员", field: "recestartend", align: "center"},
+                    {title: "开单员", field: "recestartend", align: "center"},
+                    {title: "复核员", field: "recestartend", align: "center"},
+                    {title: "打包员", field: "recestartend", align: "center"},
+                    {title: "送货员", field: "recestartend", align: "center"},
+                    {title: "收货地", field: "recestartend", align: "center"},
+                    {title: "收货", field: "recestartend", align: "center"},
+                ]
+            ],
+            url: '/console/distrib/listrole',
+            queryParams: function (params) {
+                //var state = [0,1];
+                return params;
+            },
+            responseHandler: function (res) {
+                return {
+                    rows: res.result.pageInfo.list,
+                    total: res.result.pageInfo.total
+                }
+            },
+            search: true,
+            searchOnEnterKey: true,
+            sortName: 'createdat',
+            sortOrder: 'asc',
+            pagination: true,
+            sidePagination: 'server',
+            pageSize: 20,
+            pageList: [20, 40, 50, 100],
+            toolbar: "#toolbar",
+            showRefresh: true,
+            showToggle: true,
+            singleSelect: true,
+        });
+    }
+
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<a href="/console/distrib/form?uid=' + row.uid + '" >',
+            '<i class="glyphicon glyphicon-edit"></i>修改',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0);" >',
+            '<i class="glyphicon glyphicon-remove"></i>删除',
+            '</a>'
+        ].join('');
+    }
+
+
+    window.operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            if (row.state !== 1) {
+                alert("已进入流程或流程结束，不能删除！");
+            } else {
+                operaModel.delRow(row.uid, '/console/distrib/delete', 'uid');
+            }
+        }
+    };
+
+    // 按钮点击事件
+    function receclick() {
+        //alert("接单处理");
+        var selectContent = $table.bootstrapTable('getSelections')[0];
+        //alert(selectContent);
+        if (typeof(selectContent) == 'undefined') {
+            //layer.message('请选择一列数据!');
+            alert('请选择一列数据!');
+            return false;
+        } else {
+            console.info(selectContent);
+            if (selectContent.state == 1) {
+                var url = "/console/distrib/formlayer?uid=" + selectContent.uid;
+                layer.open({
+                    type: 2,
+                    title: '欢迎页',
+                    maxmin: true,
+                    area: ['800px', '500px'],
+                    content: url,
+                    end: function(){
+
+                        //layer.tips('Hi', '#about', {tips: 1})
+                    }
+                });
+            } else {
+                alert('状态不匹配!')
+            }
+        }
+
+    };
+
+
+    /*]]>*/
+
+
+</script>
+</html>

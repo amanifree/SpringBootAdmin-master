@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="console/header">
+</head>
+<body>
+<section class="content-header">
+    <h1>调货管理</h1>
+    <small>列表管理</small>
+</section>
+<section class="content table-content">
+    <table id="dataGrid"></table>
+</section>
+<div id="toolbar">
+    <a shiro:hasPermission="adjust:add" href="/console/adjust/form" class="btn btn-primary" >添加调货</a>
+    <!--<a shiro:hasPermission="distrib:rece" href="javascript:receclick()"  class="btn btn-primary" >接货</a>-->
+<!--    <a shiro:hasPermission="receipt:acre" href="/console/receipt/form" class="btn btn-primary" >验收退货</a>
+    <a shiro:hasPermission="receipt:acch" href="/console/receipt/form" class="btn btn-primary" >验收复核</a>
+    <a shiro:hasPermission="receipt:acba" href="/console/receipt/form" class="btn btn-primary" >验收退单</a>
+    <a shiro:hasPermission="receipt:tall" href="/console/receipt/form" class="btn btn-primary" >理货上架</a>-->
+</div>
+<div th:include="console/footer"></div>
+</body>
+<script type="text/javascript">
+    $table = $("#dataGrid");
+    $(function () {
+        initDataGrid();
+    });
+
+    function initDataGrid(){
+        $table.bootstrapTable({
+            height : tableModel.getHeight(),
+            idField : "uid",
+            checkboxHeader: true,
+            columns : [[
+                //增加选择列
+                {checkbox: true},
+                {title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter},
+                {title: "单据状态", field: "state" },
+                {title: "单据编号", field: "adjustNum" },
+                {title: "订货单位", field: "orderUnit", sortable: true},
+                {title: "产品名称", field: "productname",sortable: true},
+                {title: "厂家", field: "factory", sortable: true},
+                {title: "单位", field: "unit", sortable: true},
+                {title: "数量", field: "number", sortable: true},
+                {title: "出货时间", field: "shipmentTime", sortable: true},
+                {title: "调货单位", field: "adjustUnit", sortable: true},
+                {title: "调货开始", field: "adjustBegin", sortable: true},
+                {title: "调货截止", field: "adjustEnd", sortable: true},
+                {title: "调货人员", field: "adjustMan", sortable: true},
+
+
+
+            ]],
+            url : '/console/adjust/listrole',
+            queryParams: function(params){
+                //var state = [0,1];
+                 return params;
+            },
+            responseHandler : function (res) {
+                return {
+                    rows : res.result.pageInfo.list,
+                    total : res.result.pageInfo.total
+                }
+            },
+            search : true,
+            searchOnEnterKey : true,
+            sortName : 'createdat',
+            sortOrder : 'asc',
+            pagination : true,
+            sidePagination : 'server',
+            pageSize: 20,
+            pageList : [20, 40, 50, 100],
+            toolbar : "#toolbar",
+            showRefresh : true,
+            showToggle : true,
+            singleSelect: true,
+        });
+    }
+
+
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<a href="/console/adjust/form?uid='+row.uid+'" >',
+            '<i class="glyphicon glyphicon-edit"></i>修改',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0);" >',
+            '<i class="glyphicon glyphicon-remove"></i>删除',
+            '</a>'
+        ].join('');
+    }
+
+
+
+    window.operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            if(row.state!==1){
+                alert("已进入流程或流程结束，不能删除！");
+            }else{
+                operaModel.delRow(row.uid, '/console/adjust/delete', 'uid');
+            }
+        }
+    };
+
+    // 按钮点击事件
+    function receclick(){
+        alert("asdfasdfasd");
+        var selectContent = $table.bootstrapTable('getSelections')[0];
+        alert(selectContent);
+        if(typeof(selectContent) == 'undefined') {
+            //toastr.warning('请选择一列数据!');
+
+            alert('请选择一列数据!');
+            return false;
+        }else{
+            console.info(selectContent);
+            $('#item_project_modal').modal('show');     // 项目立项面板
+        }
+
+    };
+
+
+
+</script>
+</html>

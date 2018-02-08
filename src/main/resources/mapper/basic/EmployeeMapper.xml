@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.basic.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.basic.Employee" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="emp_no" property="empNo" jdbcType="VARCHAR" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="dep_id" property="depId" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByDepart" parameterType="String" resultMap="BaseResultMap">
+    select * from employee where dep_name = #{depname}
+  </select>
+</mapper>

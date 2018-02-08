@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.console.ReceiptMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Receipt" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="receipt_num" property="receiptNum" jdbcType="VARCHAR" />
+    <result column="delivery_unit" property="deliveryUnit" jdbcType="VARCHAR" />
+    <result column="productname" property="productname" jdbcType="VARCHAR" />
+    <result column="factory" property="factory" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="DECIMAL" />
+    <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP" />
+    <result column="receipt_addr" property="receiptAddr" jdbcType="VARCHAR" />
+    <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP" />
+    <result column="receipt_man" property="receiptMan" jdbcType="VARCHAR" />
+    <result column="accep_re_man" property="accepReMan" jdbcType="VARCHAR" />
+    <result column="accep_re_begin" property="accepReBegin" jdbcType="TIMESTAMP" />
+    <result column="accep_re_end" property="accepReEnd" jdbcType="TIMESTAMP" />
+    <result column="accep_check_man" property="accepCheckMan" jdbcType="VARCHAR" />
+    <result column="accep_check_begin" property="accepCheckBegin" jdbcType="TIMESTAMP" />
+    <result column="accep_check_end" property="accepCheckEnd" jdbcType="TIMESTAMP" />
+    <result column="accep_back_man" property="accepBackMan" jdbcType="VARCHAR" />
+    <result column="accep_back_begin" property="accepBackBegin" jdbcType="TIMESTAMP" />
+    <result column="accep_back_end" property="accepBackEnd" jdbcType="TIMESTAMP" />
+    <result column="tally_man" property="tallyMan" jdbcType="VARCHAR" />
+    <result column="tally_begin" property="tallyBegin" jdbcType="TIMESTAMP" />
+    <result column="tally_end" property="tallyEnd" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="createdat" property="createdat" jdbcType="TIMESTAMP" />
+    <result column="updatedat" property="updatedat" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <!--根据角色对应的状态查询收货列表-->
+  <select id="selectByRole" parameterType="String" resultMap="BaseResultMap">
+    select *  from receipt where state in
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+
+  </select>
+</mapper>

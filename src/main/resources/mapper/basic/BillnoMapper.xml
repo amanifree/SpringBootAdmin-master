@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.basic.BillnoMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.basic.Billno" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+    <result column="billmaxno" property="billmaxno" jdbcType="INTEGER" />
+    <result column="billdate" property="billdate" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!--根据单据类型获取最大流水-->
+  <select id="selectByBillType" parameterType="String" resultMap="BaseResultMap">
+    select *  from billno where billtype = #{billtype};
+  </select>
+
+</mapper>

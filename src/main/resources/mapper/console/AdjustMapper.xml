@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.console.AdjustMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Adjust" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="adjust_num" property="adjustNum" jdbcType="VARCHAR" />
+    <result column="order_unit" property="orderUnit" jdbcType="VARCHAR" />
+    <result column="productname" property="productname" jdbcType="VARCHAR" />
+    <result column="factory" property="factory" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="DECIMAL" />
+    <result column="shipment_time" property="shipmentTime" jdbcType="TIMESTAMP" />
+    <result column="adjust_begin" property="adjustBegin" jdbcType="TIMESTAMP" />
+    <result column="adjust_end" property="adjustEnd" jdbcType="TIMESTAMP" />
+    <result column="adjust_man" property="adjustMan" jdbcType="VARCHAR" />
+    <result column="adjust_unit" property="adjustUnit" jdbcType="VARCHAR" />
+    <result column="receipt_man" property="receiptMan" jdbcType="VARCHAR" />
+    <result column="receipt_begin" property="receiptBegin" jdbcType="TIMESTAMP" />
+    <result column="receipt_end" property="receiptEnd" jdbcType="TIMESTAMP" />
+    <result column="purcha_data_man" property="purchaDataMan" jdbcType="VARCHAR" />
+    <result column="purchabillno" property="purchabillno" jdbcType="VARCHAR" />
+    <result column="purcha_data_begin" property="purchaDataBegin" jdbcType="TIMESTAMP" />
+    <result column="purcha_data_end" property="purchaDataEnd" jdbcType="TIMESTAMP" />
+    <result column="check_man" property="checkMan" jdbcType="VARCHAR" />
+    <result column="check_begin" property="checkBegin" jdbcType="TIMESTAMP" />
+    <result column="check_end" property="checkEnd" jdbcType="TIMESTAMP" />
+    <result column="distrib_pack_man" property="distribPackMan" jdbcType="VARCHAR" />
+    <result column="distrib_deli_man" property="distribDeliMan" jdbcType="VARCHAR" />
+    <result column="distrib_begin" property="distribBegin" jdbcType="TIMESTAMP" />
+    <result column="distrib_end" property="distribEnd" jdbcType="TIMESTAMP" />
+    <result column="receipt_addr" property="receiptAddr" jdbcType="VARCHAR" />
+    <result column="sendout_time" property="sendoutTime" jdbcType="TIMESTAMP" />
+    <result column="reciept_man" property="recieptMan" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="createdat" property="createdat" jdbcType="TIMESTAMP" />
+    <result column="updatedat" property="updatedat" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="selectByRole" parameterType="String" resultMap="BaseResultMap">
+       select * from adjust where state in
+       <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+               #{item}
+       </foreach>
+  </select>
+</mapper>
